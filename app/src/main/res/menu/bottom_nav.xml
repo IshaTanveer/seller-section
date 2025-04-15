@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/home"
+        android:id="@+id/homeIcon"
+        android:icon="@drawable/home"
+        />
+    <item android:title="@string/messages"
+        android:id="@+id/messageIcon"
+        android:icon="@drawable/chat"
+        />
+    <item android:title="@string/account"
+        android:id="@+id/accountIcon"
+        android:icon="@drawable/user"
+        />
+</menu>

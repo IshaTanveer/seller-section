@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EnterOTPActivity">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/trolley_icon"
+        android:src="@drawable/trolley"
+        app:layout_constraintBottom_toTopOf="@+id/discoveryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/white"
+        android:layout_margin="0dp"/>
+
+    <TextView
+        android:id="@+id/sendOTPtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/OTPcode0"
+        android:text="@string/enter_your_otp_sent_to"
+        android:textColor="@color/grey"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@+id/yourNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12345678910"
+        android:id="@+id/yourNumber"
+        app:layout_constraintBottom_toBottomOf="@+id/sendOTPtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sendOTPtext" />
+
+    <TextView
+        android:id="@+id/discoveryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/otp_verification"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/sendOTPtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/OTPcode0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="1"
+        android:hint="@string/_0"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/codeBlue"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintEnd_toStartOf="@+id/OTPcode1"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OTPcode1"
+        android:hint="@string/_0"
+        android:maxLength="1"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/OTPcode0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/codeBlue"
+        app:layout_constraintEnd_toStartOf="@+id/OTPcode2"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OTPcode2"
+        android:hint="@string/_0"
+        android:maxLength="1"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/OTPcode1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/codeBlue"
+        app:layout_constraintEnd_toStartOf="@+id/OTPcode3"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OTPcode3"
+        android:hint="@string/_0"
+        android:maxLength="1"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/OTPcode2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/codeBlue"
+        app:layout_constraintEnd_toStartOf="@+id/OTPcode4"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/OTPcode4"
+        android:hint="@string/_0"
+        android:maxLength="1"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/OTPcode3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/codeBlue"
+        app:layout_constraintEnd_toStartOf="@+id/OTPcode5"/>
+
+    <EditText
+        android:id="@+id/OTPcode5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/codeBlue"
+        android:hint="@string/_0"
+        android:maxLength="1"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/OTPcode4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/didNotReceiveOTP"
+        app:layout_constraintTop_toBottomOf="@+id/OTPcode0"
+        android:text="@string/did_not_receive_the_otp"
+        android:paddingTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@+id/resendOTP"/>
+
+    <TextView
+        android:id="@+id/resendOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingStart="5dp"
+        android:text="@string/resend_otp"
+        android:textAllCaps="true"
+        android:textColor="@color/Red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/didNotReceiveOTP"
+        app:layout_constraintTop_toBottomOf="@+id/OTPcode0"
+        tools:ignore="RtlSymmetry" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OTPButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/round_corners"
+        android:backgroundTint="@color/darkBlue"
+        android:text="@string/send_otp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/didNotReceiveOTP"
+        tools:ignore="RtlSymmetry" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/verifyingProgressBar"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/OTPButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
