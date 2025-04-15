@@ -28,4 +28,6 @@
     <string name="my_income">My Income</string>
     <string name="logout">Logout</string>
     <string name="username">username</string>
+    <string name="user_profile_photo">User profile photo</string>
+    <string name="about">About</string>
 </resources>

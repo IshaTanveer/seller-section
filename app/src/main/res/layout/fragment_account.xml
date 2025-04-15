@@ -8,13 +8,16 @@
     android:padding="15dp">
 
     <ImageView
+        android:id="@+id/userPfp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/userPfp"
-        android:src="@drawable/user"
         android:background="@drawable/round_image"
         android:backgroundTint="@color/black"
-        android:clipToOutline="true"/>
+        android:clipToOutline="true"
+        android:contentDescription="@string/user_profile_photo"
+        android:src="@drawable/user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/usernameText"
@@ -157,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/aboutButton"
-                android:text="@string/feedback"
+                android:text="@string/about"
                 app:iconTint="@color/grey"
                 android:textColor="@color/grey"
                 android:textAlignment="textStart"
