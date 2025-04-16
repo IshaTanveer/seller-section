@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AccountFrag"
-    android:padding="15dp">
+    tools:context=".AccountFrag">
 
     <ImageView
         android:id="@+id/userPfp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:background="@drawable/round_image"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/lightGrey"
         android:clipToOutline="true"
+        android:layout_margin="25dp"
         android:contentDescription="@string/user_profile_photo"
         android:src="@drawable/user"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,58 +23,92 @@
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:text="@string/username"
-        android:textSize="17sp"
-        android:layout_marginStart="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/userPfp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/followers"
         app:layout_constraintStart_toEndOf="@+id/userPfp"
         app:layout_constraintTop_toTopOf="@+id/userPfp"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:ignore="MissingConstraints" />
 
+    <LinearLayout
+        android:id="@+id/followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/usernameText"
+        app:layout_constraintBottom_toBottomOf="@+id/userPfp"
+        app:layout_constraintStart_toEndOf="@+id/userPfp">
+
+        <TextView
+            android:id="@+id/wishlistNumbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:textSize="17sp"
+            android:text="@string/_0" />
+
+        <TextView
+            android:id="@+id/wishlistText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/followers"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/CardOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/CardOne"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/userPfp">
+        app:layout_constraintTop_toBottomOf="@+id/userPfp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="25dp"
+        app:cardCornerRadius="12dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/settingsButton"
-                android:text="@string/account_setting"
-                app:iconTint="@color/grey"
-                android:textColor="@color/grey"
-                android:textAlignment="textStart"
-                android:backgroundTint="@color/white"
-                android:textSize="20sp"
-                android:paddingStart="30dp"
-                android:textAllCaps="false"
-                tools:ignore="MissingConstraints,RtlSymmetry"
-                app:icon="@drawable/next"
-                app:iconGravity="end"/>
-
-            <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/healthButton"
-                android:text="@string/account_health"
-                app:iconTint="@color/grey"
-                android:textColor="@color/grey"
-                android:textAlignment="textStart"
                 android:backgroundTint="@color/white"
-                android:textSize="20sp"
                 android:paddingStart="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/settingsButton"
+                android:text="@string/account_setting"
+                android:textAlignment="textStart"
                 android:textAllCaps="false"
-                tools:ignore="RtlSymmetry"
+                android:textColor="@color/grey"
+                android:textSize="20sp"
                 app:icon="@drawable/next"
-                app:iconGravity="end"/>
+                app:iconGravity="end"
+                app:iconTint="@color/grey"
+                tools:ignore="MissingConstraints,RtlSymmetry" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/healthButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:paddingStart="30dp"
+                android:text="@string/account_health"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                app:icon="@drawable/next"
+                app:iconGravity="end"
+                app:iconTint="@color/grey"
+                app:layout_constraintTop_toBottomOf="@+id/settingsButton"
+                tools:ignore="RtlSymmetry" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,7 +119,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/CardTwo"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/CardOne">
+        app:layout_constraintTop_toBottomOf="@id/CardOne"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -133,7 +170,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/CardThree"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/CardTwo">
+        app:layout_constraintTop_toBottomOf="@id/CardTwo"
+        tools:layout_editor_absoluteX="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -189,7 +230,9 @@
         app:layout_constraintTop_toBottomOf="@+id/CardThree"
         android:textAllCaps="false"
         tools:ignore="RtlSymmetry"
-        android:padding="10dp"
+        android:padding="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
