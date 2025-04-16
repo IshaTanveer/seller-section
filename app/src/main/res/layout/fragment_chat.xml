@@ -6,15 +6,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChatFrag">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/myOrdersText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="@string/my_chats"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chat"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/no_messages_icon"
+        android:src="@drawable/no_messages"
+        app:layout_constraintBottom_toTopOf="@+id/noChatsText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@android:color/transparent"/>
+
+    <TextView
+        android:id="@+id/noChatsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/no_messages_yet"
+        android:textColor="@color/grey"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/myOrdersText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/startChattingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/blue_border"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/start_texting"
+        android:textAllCaps="false"
+        android:textColor="@color/darkBlue"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/noChatsText"
+        app:layout_constraintStart_toStartOf="@+id/noChatsText"
+        app:layout_constraintTop_toBottomOf="@+id/noChatsText"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

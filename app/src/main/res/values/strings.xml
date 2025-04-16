@@ -30,4 +30,17 @@
     <string name="username">username</string>
     <string name="user_profile_photo">User profile photo</string>
     <string name="about">About</string>
+    <string name="my_chats">My Chats</string>
+    <string name="no_messages_icon">No messages icon</string>
+    <string name="no_messages_yet">No messages yet</string>
+    <string name="start_texting">Start Texting</string>
+    <string name="followers">Followers</string>
+    <string name="my_tools">My Tools</string>
+    <string name="add_products">Add Products</string>
+    <string name="products">Products</string>
+    <string name="return_orders">Return Orders</string>
+    <string name="reviews">Reviews</string>
+    <string name="manage_reviews">Manage Reviews</string>
+    <string name="orders">Orders</string>
+    <string name="basic_functions">Basic Functions</string>
 </resources>
