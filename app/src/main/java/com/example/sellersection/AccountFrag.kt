@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.sellersection.databinding.FragmentAccountBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +25,7 @@ class AccountFrag : Fragment() {
     // TODO: Rename and change types of parameters
 
     private lateinit var binding: FragmentAccountBinding
+    private lateinit var auth: FirebaseAuth
 
     private var param1: String? = null
     private var param2: String? = null
@@ -37,7 +41,7 @@ class AccountFrag : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentAccountBinding.inflate(layoutInflater)
         return binding.root
@@ -46,7 +50,10 @@ class AccountFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = Firebase.auth
         binding.logoutButton.setOnClickListener{
+            Firebase.auth.signOut()
+            replaceActivity(requireContext(), MainActivity::class.java)
             Toast.makeText(requireContext(), "logout", Toast.LENGTH_SHORT).show()
         }
 

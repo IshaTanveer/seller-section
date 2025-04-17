@@ -164,7 +164,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/round_corners"
         android:backgroundTint="@color/darkBlue"
-        android:text="@string/send_otp"
+        android:text="@string/register_or_login"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
