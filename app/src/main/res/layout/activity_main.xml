@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/discoveryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="@color/white"
+        android:background="@android:color/transparent"
         android:layout_margin="0dp"/>
 
     <TextView
