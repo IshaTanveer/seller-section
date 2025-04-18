@@ -160,18 +160,6 @@
                     android:textColor="@color/grey"
                     app:layout_constraintTop_toBottomOf="@+id/productStock"
                     />
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:id="@+id/dangerousGoods"
-                    android:textSize="17sp"
-                    app:thumbTint="@color/grey"
-                    app:trackTint="@color/lightGrey"
-                    android:text="@string/dangerous_goods"
-                    android:textColor="@color/grey"
-                    app:layout_constraintTop_toBottomOf="@+id/productAvailability"
-                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
