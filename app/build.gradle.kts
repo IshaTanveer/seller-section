@@ -42,6 +42,8 @@ android {
 
 dependencies {
 
+    implementation (libs.firebase.database.v2030) // or latest
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

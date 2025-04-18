@@ -1,13 +1,13 @@
 package com.example.sellersection
 
-import android.app.Dialog
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
@@ -15,26 +15,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.sellersection.databinding.ActivityAddProductBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
 
 class AddProductActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddProductBinding
-    private lateinit var database: DatabaseReference
-    private lateinit var imageUriString: String
-    private var availability: Boolean = false
-    private var dangerous: Boolean = false
     private lateinit var selectedWeightUnit: String
-    private lateinit var category: String
+    private val product = Products()
+    private val shipInfo = ShippingInfo()
+
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        imageUriString = uri.toString()
+        product.photo = uri.toString()
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
             binding.productImages.setImageURI(uri)
@@ -65,12 +65,22 @@ class AddProductActivity : AppCompatActivity() {
         getData()
     }
 
+    @SuppressLint("InflateParams", "MissingInflatedId")
     private fun descriptionDialog() {
         binding.productDescription.setOnClickListener{
             val descriptionDialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.description_layout, null)
             descriptionDialog.setContentView(view)
             descriptionDialog.show()
+
+            val desc: EditText = view.findViewById(R.id.description)
+            val saveDescription: AppCompatButton = view.findViewById(R.id.saveDescription)
+            saveDescription.setOnClickListener{
+                product.description = desc.text.toString()
+                Toast.makeText(this, "description saved", Toast.LENGTH_SHORT).show()
+                descriptionDialog.dismiss()
+            }
+
             val back: ImageView = view.findViewById(R.id.backToTools)
             back.setOnClickListener{
                 descriptionDialog.dismiss()
@@ -83,16 +93,46 @@ class AddProductActivity : AppCompatActivity() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         binding.saveProduct.setOnClickListener{
-            var name = binding.productName.text.toString()
-            var price = binding.productPrice.text.toString()
-            var stock = binding.productStock.text.toString()
-            manageCategorySpinner()
-            if (listOf(name, category, price, stock).any { it.isEmpty() })
+            product.name = binding.productName.text.toString()
+            product.price = binding.productPrice.text.toString().toIntOrNull() ?: 0
+            product.stock = binding.productStock.text.toString().toIntOrNull() ?: 0
+            if (product.name.isBlank() || product.category.isBlank() || product.photo.isBlank()
+                || product.price == 0 || product.stock == 0)
                 Toast.makeText(this, "One of the required fields is empty", Toast.LENGTH_SHORT).show()
-            else
-                addProductToDB(name, category, price, stock)
+            else if(product.description.isBlank())
+                Toast.makeText(this, "PLease write the description of the product", Toast.LENGTH_SHORT).show()
+            else if(shipInfo.pkgWeight <= 0F || shipInfo.pkgLength <= 0F && shipInfo.pkgWidth <= 0F && shipInfo.pkgHeight <= 0F){
+                Toast.makeText(this, "PLease enter complete Shipping Information", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val firebaseDatabase = FirebaseDatabase.getInstance("https://ecom-652e8-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                val productReference = firebaseDatabase.getReference("product")
+                val productId = productReference.push().key
+                Log.d("adding Product to firebase db", "Attempting to write product data...")
+                if (productId != null) {
+                    productReference.child(productId).setValue(product)
+                        .addOnSuccessListener {
+                            Log.d("adding product", "Write successful")
+                            Toast.makeText(this@AddProductActivity, "product added successfully!", Toast.LENGTH_SHORT).show()
+                            productReference.child(productId).child("shippingInfo").setValue(shipInfo)
+                                .addOnSuccessListener {
+                                    Log.d("adding shipping info", "Shipping info added to product")
+                                    Toast.makeText(this@AddProductActivity, "shipping info added!", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { error ->
+                                    Log.e("FirebaseError", "Error adding shipping info: ${error.message}")
+                                }
+                        }
+                        .addOnFailureListener { error ->
+                            Log.e("FirebaseError", "Error: ${error.message}")
+                            Toast.makeText(this@AddProductActivity, "Failed to add product: ${error.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                Toast.makeText(this, "data saved", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     private fun manageCategorySpinner() {
         val spinner: Spinner = findViewById(R.id.productCategory)
@@ -107,7 +147,7 @@ class AddProductActivity : AppCompatActivity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (parent != null) {
-                    category = parent.getItemAtPosition(position).toString()
+                    product.category = parent.getItemAtPosition(position).toString()
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -117,6 +157,7 @@ class AddProductActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("InflateParams", "SetTextI18n")
     private fun shippingInfoDialog(){
         binding.productShippingInfo.setOnClickListener{
             val shippingInfoDialog = BottomSheetDialog(this)
@@ -126,6 +167,39 @@ class AddProductActivity : AppCompatActivity() {
 
             manageWeightSpinner(view)
             val back: ImageView = view.findViewById(R.id.backToTools)
+
+            val saveShipInfo: AppCompatButton = view.findViewById(R.id.saveShippingInfo)
+            val pkgWeight: EditText = view.findViewById(R.id.packageWeight)
+            val pkgLength: EditText = view.findViewById(R.id.pkgLength)
+            val pkgWidth: EditText = view.findViewById(R.id.pkgWidth)
+            val pkgHeight: EditText = view.findViewById(R.id.pkgHeight)
+            saveShipInfo.setOnClickListener{
+                shipInfo.pkgWeight = pkgWeight.text.toString().toFloatOrNull() ?: 0f
+                shipInfo.pkgLength  = pkgLength.text.toString().toFloatOrNull() ?: 0f
+                shipInfo.pkgWidth  = pkgWidth.text.toString().toFloatOrNull() ?: 0f
+                shipInfo.pkgHeight  = pkgHeight.text.toString().toFloatOrNull() ?: 0f
+                if(shipInfo.pkgWeight > 300){
+                    shipInfo.pkgWeight = 300.0F
+                    pkgWeight.setText(shipInfo.pkgWeight.toString())
+                }
+                if(shipInfo.pkgLength > 300){
+                    shipInfo.pkgLength = 300.0F
+                    pkgLength.setText(shipInfo.pkgLength.toString())
+                }
+                if(shipInfo.pkgWidth > 300){
+                    shipInfo.pkgWidth = 300.0F
+                    pkgWidth.setText(shipInfo.pkgWidth.toString())
+                }
+                if(shipInfo.pkgHeight > 300){
+                    shipInfo.pkgHeight = 300.0F
+                    pkgHeight.setText(shipInfo.pkgHeight.toString())
+                }
+                if(shipInfo.pkgWeight > 0F && shipInfo.pkgLength > 0F && shipInfo.pkgWidth > 0F && shipInfo.pkgHeight > 0F){
+                    Toast.makeText(this, "shipping Info saved", Toast.LENGTH_SHORT).show()
+                    shippingInfoDialog.dismiss()
+                }
+            }
+
             back.setOnClickListener{
                 shippingInfoDialog.dismiss()
             }
@@ -157,8 +231,8 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun toggleElements() {
         binding.productAvailability.setOnCheckedChangeListener{_, isChecked ->
-            availability = isChecked
-            if (availability) {
+            product.availability = isChecked
+            if (product.availability) {
                 Toast.makeText(this, "available", Toast.LENGTH_SHORT).show()
                 binding.productAvailability.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.darkBlue))
                 binding.productAvailability.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.codeBlue))
@@ -169,22 +243,5 @@ class AddProductActivity : AppCompatActivity() {
                 binding.productAvailability.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lightGrey))
             }
         }
-        binding.dangerousGoods.setOnCheckedChangeListener{_, isChecked ->
-            dangerous = isChecked
-            if (dangerous) {
-                Toast.makeText(this, "dangerous", Toast.LENGTH_SHORT).show()
-                binding.dangerousGoods.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.darkBlue))
-                binding.dangerousGoods.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.codeBlue))
-            }
-            else {
-                Toast.makeText(this, "not dangerous", Toast.LENGTH_SHORT).show()
-                binding.dangerousGoods.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.grey))
-                binding.dangerousGoods.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lightGrey))
-            }
-        }
-    }
-
-    private fun addProductToDB(name: String, category: String, price: String, stock: String) {
-        Toast.makeText(this, "data saved", Toast.LENGTH_SHORT).show()
     }
 }
